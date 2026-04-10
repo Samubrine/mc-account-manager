@@ -29,6 +29,10 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# Project-local artifacts
+build_log.txt
+stitch_screens/
+
 # OS/editor artifacts
 .DS_Store
 Thumbs.db
