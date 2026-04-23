@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import Modal from './Modal';
+import SkinViewer3D from './SkinViewer3D';
 
 interface Props {
     accountId: number | null;
@@ -18,6 +19,7 @@ export default function AccountDrawer({ accountId, onClose, onUpdated }: Props) 
     const [infoMessage, setInfoMessage] = useState<string | null>(null);
     const [showPassword, setShowPassword] = useState(false);
     const [showNewPassword, setShowNewPassword] = useState(false);
+    const [skinRefreshToken, setSkinRefreshToken] = useState(0);
     const [editForm, setEditForm] = useState({
         email: '',
         username: '',
@@ -38,6 +40,7 @@ export default function AccountDrawer({ accountId, onClose, onUpdated }: Props) 
             loadData();
             setShowPassword(false);
             setShowNewPassword(false);
+            setSkinRefreshToken(0);
         } else {
             setAccount(null);
             setActiveTab('info');
@@ -217,16 +220,23 @@ export default function AccountDrawer({ accountId, onClose, onUpdated }: Props) 
                 <div className="grid grid-cols-1 lg:grid-cols-[320px,1fr] max-h-[80vh]">
                     <aside className="border-b lg:border-b-0 lg:border-r border-slate-200 dark:border-glass-border bg-gradient-to-b from-slate-100/60 to-slate-200/30 dark:from-slate-900/50 dark:to-slate-950/40 p-5">
                         <div className="h-full min-h-[240px] rounded-2xl border border-slate-200 dark:border-glass-border bg-white/50 dark:bg-slate-900/40 backdrop-blur-sm p-4 flex flex-col items-center justify-center gap-4">
-                            <img
-                                src={`https://render.crafty.gg/3d/full/${encodeURIComponent(getSkinUsername())}`}
-                                alt={`${getSkinUsername()} skin preview`}
-                                className="w-full max-w-[220px] h-auto drop-shadow-[0_8px_24px_rgba(15,23,42,0.4)]"
-                                loading="lazy"
-                                referrerPolicy="no-referrer"
+                            <SkinViewer3D
+                                username={getSkinUsername()}
+                                refreshToken={skinRefreshToken}
+                                className="w-full h-[300px] max-w-[240px] drop-shadow-[0_12px_24px_rgba(15,23,42,0.35)]"
                             />
                             <div className="text-center">
                                 <p className="text-xs uppercase tracking-wider text-slate-500">Skin Preview</p>
                                 <p className="font-semibold text-slate-900 dark:text-white mt-1">{getSkinUsername()}</p>
+                                <button
+                                    type="button"
+                                    onClick={() => setSkinRefreshToken((prev) => prev + 1)}
+                                    className="mt-3 inline-flex items-center gap-1.5 rounded-lg border border-slate-300/90 dark:border-glass-border bg-white/80 dark:bg-slate-800/60 px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-700/70 transition-colors"
+                                    title="Refresh skin"
+                                >
+                                    <span className="material-symbols-outlined text-[15px]">refresh</span>
+                                    Refresh Skin
+                                </button>
                             </div>
                         </div>
                     </aside>
