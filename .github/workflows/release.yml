@@ -30,6 +30,8 @@ jobs:
         run: npm run rebuild
 
       - name: Build application
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run build
 
       - name: Prepare release metadata
